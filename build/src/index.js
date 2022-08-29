@@ -1,0 +1,23 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const app_1 = require("../src/app");
+const ClientBusiness_1 = require("./business/ClientBusiness");
+const ClientData_1 = require("./data/ClientData");
+const IdGenerator_1 = require("./services/IdGenerator");
+const TokenGenerator_1 = require("./services/TokenGenerator");
+const HashManager_1 = require("./services/HashManager");
+const ClientController_1 = require("./controller/ClientController");
+const TransactionBusiness_1 = require("./business/TransactionBusiness");
+const TransactionData_1 = require("./data/TransactionData");
+const TransactionController_1 = require("./controller/TransactionController");
+const clientBusiness = new ClientBusiness_1.ClientBusiness(new ClientData_1.ClientData(), new IdGenerator_1.IdGenerator(), new TokenGenerator_1.TokenGenerator(), new HashManager_1.HashManager());
+const clientController = new ClientController_1.ClientController(clientBusiness);
+app_1.app.post("/user/signup", clientController.signUp);
+app_1.app.post("/user/login", clientController.login);
+app_1.app.post("/user/card", clientController.createCard);
+app_1.app.get("/user/card", clientController.seeInfoFromCards);
+const transactionBusiness = new TransactionBusiness_1.TransactionBusiness(new TransactionData_1.TransactionData(), new TokenGenerator_1.TokenGenerator(), new HashManager_1.HashManager(), new ClientData_1.ClientData());
+const transactionController = new TransactionController_1.TransactionController(transactionBusiness);
+app_1.app.post("/payment", transactionController.createPayment);
+app_1.app.get("/payment", transactionController.getPaymentsFromUser);
+//# sourceMappingURL=index.js.map
